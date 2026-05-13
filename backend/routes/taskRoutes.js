@@ -5,7 +5,7 @@ const verifyToken = require("../middleware/authMiddleware");
 const router = express.Router();
 
 
-// ➕ CREATE TASK
+// CREATE TASK
 router.post("/", verifyToken, async (req, res) => {
     try {
         const task = await Task.create({
@@ -20,7 +20,7 @@ router.post("/", verifyToken, async (req, res) => {
 });
 
 
-// 📥 GET TASKS (ONLY LOGGED USER)
+// GET TASKS (ONLY LOGGED USER)
 router.get("/", verifyToken, async (req, res) => {
     try {
         const tasks = await Task.findAll({
@@ -34,7 +34,7 @@ router.get("/", verifyToken, async (req, res) => {
 });
 
 
-// ✏️ UPDATE TASK
+// UPDATE TASK
 router.put("/:id", verifyToken, async (req, res) => {
     try {
         const task = await Task.findOne({
@@ -58,7 +58,7 @@ router.put("/:id", verifyToken, async (req, res) => {
 });
 
 
-// ❌ DELETE TASK
+// DELETE TASK
 router.delete("/:id", verifyToken, async (req, res) => {
     try {
         const deleted = await Task.destroy({
