@@ -7,10 +7,44 @@ export default function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const [errors, setErrors] = useState({});
+
     const navigate = useNavigate();
+
+    // VALIDATION FUNCTION
+    const validate = () => {
+        const newErrors = {};
+
+        // NAME
+        if (!name.trim()) {
+            newErrors.name = "Name is required";
+        } else if (name.trim().length < 3) {
+            newErrors.name = "Name must be at least 3 characters";
+        }
+
+        // EMAIL
+        if (!email.trim()) {
+            newErrors.email = "Email is required";
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            newErrors.email = "Enter a valid email";
+        }
+
+        // PASSWORD
+        if (!password.trim()) {
+            newErrors.password = "Password is required";
+        } else if (password.length < 6) {
+            newErrors.password = "Password must be at least 6 characters";
+        }
+
+        setErrors(newErrors);
+
+        return Object.keys(newErrors).length === 0;
+    };
 
     const handleRegister = async (e) => {
         e.preventDefault();
+
+        if (!validate()) return;
 
         try {
             await registerUser({ name, email, password });
@@ -45,6 +79,7 @@ export default function Register() {
                     {/* FORM */}
                     <form onSubmit={handleRegister} className="space-y-6">
 
+                        {/* NAME */}
                         <div>
                             <label className="text-sm text-gray-600">Full Name</label>
                             <input
@@ -55,8 +90,14 @@ export default function Register() {
                                 className="w-full mt-2 px-4 py-3 border border-gray-200 rounded-xl
                                 focus:ring-2 focus:ring-purple-400 outline-none transition"
                             />
+                            {errors.name && (
+                                <p className="text-red-500 text-sm mt-1">
+                                    {errors.name}
+                                </p>
+                            )}
                         </div>
 
+                        {/* EMAIL */}
                         <div>
                             <label className="text-sm text-gray-600">Email</label>
                             <input
@@ -67,8 +108,14 @@ export default function Register() {
                                 className="w-full mt-2 px-4 py-3 border border-gray-200 rounded-xl
                                 focus:ring-2 focus:ring-purple-400 outline-none transition"
                             />
+                            {errors.email && (
+                                <p className="text-red-500 text-sm mt-1">
+                                    {errors.email}
+                                </p>
+                            )}
                         </div>
 
+                        {/* PASSWORD */}
                         <div>
                             <label className="text-sm text-gray-600">Password</label>
                             <input
@@ -79,6 +126,11 @@ export default function Register() {
                                 className="w-full mt-2 px-4 py-3 border border-gray-200 rounded-xl
                                 focus:ring-2 focus:ring-purple-400 outline-none transition"
                             />
+                            {errors.password && (
+                                <p className="text-red-500 text-sm mt-1">
+                                    {errors.password}
+                                </p>
+                            )}
                         </div>
 
                         <button
@@ -104,9 +156,7 @@ export default function Register() {
                 </div>
             </div>
 
-            <div className="hidden md:block w-px bg-gradient-to-b from-transparent via-purple-400 to-transparent opacity-60 animate-pulse"></div>
-
-            {/* RIGHT SIDE - INFO PANEL */}
+            {/* RIGHT SIDE */}
             <div className="hidden md:flex w-1/2 items-center justify-center px-16 relative">
 
                 <div className="max-w-lg text-left">

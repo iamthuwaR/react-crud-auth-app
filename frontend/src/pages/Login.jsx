@@ -7,11 +7,36 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const [errors, setErrors] = useState({});
+
     const { login } = useAuth();
     const navigate = useNavigate();
 
+    // VALIDATION FUNCTION
+    const validate = () => {
+        const newErrors = {};
+
+        if (!email.trim()) {
+            newErrors.email = "Email is required";
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            newErrors.email = "Enter a valid email";
+        }
+
+        if (!password.trim()) {
+            newErrors.password = "Password is required";
+        } else if (password.length < 6) {
+            newErrors.password = "Password must be at least 6 characters";
+        }
+
+        setErrors(newErrors);
+
+        return Object.keys(newErrors).length === 0;
+    };
+
     const handleLogin = async (e) => {
         e.preventDefault();
+
+        if (!validate()) return;
 
         try {
             const res = await loginUser({ email, password });
@@ -57,6 +82,12 @@ export default function Login() {
                                 className="w-full mt-2 px-4 py-3 border border-gray-200 rounded-xl
                                 focus:ring-2 focus:ring-purple-400 outline-none transition"
                             />
+
+                            {errors.email && (
+                                <p className="text-red-500 text-sm mt-1">
+                                    {errors.email}
+                                </p>
+                            )}
                         </div>
 
                         {/* PASSWORD */}
@@ -70,6 +101,12 @@ export default function Login() {
                                 className="w-full mt-2 px-4 py-3 border border-gray-200 rounded-xl
                                 focus:ring-2 focus:ring-purple-400 outline-none transition"
                             />
+
+                            {errors.password && (
+                                <p className="text-red-500 text-sm mt-1">
+                                    {errors.password}
+                                </p>
+                            )}
                         </div>
 
                         {/* BUTTON */}
