@@ -120,7 +120,6 @@ export default function Register() {
                         clean and modern full-stack system built for real-world use.
                     </p>
 
-                    {/* DECORATIVE GLOW */}
                     <div className="absolute w-72 h-72 bg-purple-300/30 rounded-full blur-3xl top-10 right-10"></div>
                 </div>
             </div>
